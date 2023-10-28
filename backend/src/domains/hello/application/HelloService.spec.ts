@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FetchHelloPort, FetchHelloPortEnum } from '../core/ports/IncomingPort';
+import { DisplayHelloPort, IncomingPortEnum } from '../core/ports/IncomingPort';
 import { HelloService } from './HelloService';
 
 describe('HelloService', () => {
-  let helloAdapter: FetchHelloPort;
+  let helloAdapter: DisplayHelloPort;
   let mockRepository;
+  let spy: jest.SpyInstance;
 
   beforeEach(async () => {
     mockRepository = {
@@ -15,18 +16,26 @@ describe('HelloService', () => {
       providers: [
         HelloService,
         {
-          provide: FetchHelloPortEnum.FetchHelloPort,
-          useClass: mockRepository,
+          provide: IncomingPortEnum.DisplayHelloPort,
+          useValue: mockRepository,
         },
       ],
     }).compile();
+    spy = jest.spyOn(mockRepository, 'fetchHello');
+    helloAdapter = module.get<DisplayHelloPort>(HelloService);
+  });
 
-    helloAdapter = module.get<FetchHelloPort>(HelloService);
+  afterEach(() => {
+    spy.mockClear();
   });
 
   it('should get hello', () => {
     const result = helloAdapter.fetchHello();
-    console.log('result: ', result);
     expect(result).toEqual('hello');
+  });
+
+  it('should have called getHello once', () => {
+    helloAdapter.fetchHello();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
