@@ -1,13 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateAccountUseCase } from './CreateAccountUseCase';
-import { CreateAccountPort, FetchAccountPort } from '../ports/IncomingPort';
+import { CreateAccountAdapter } from './CreateAccountUseCase';
+import {
+  CreateAccountUseCase,
+  FetchAccountUseCase,
+} from '../ports/IncomingPort';
 import { Account } from '../models/Account';
 import { OutgoingPortEnum } from '../ports/OutgoingPort';
-import { FetchAccountUseCase } from './FetchAccountUseCase';
+import { FetchAccountAdapter } from './FetchAccountUseCase';
 
 describe('Account', () => {
-  let createAccountAdapter: CreateAccountPort;
-  let fetchAccountAdapter: FetchAccountPort;
+  let createAccountAdapter: CreateAccountUseCase;
+  let fetchAccountAdapter: FetchAccountUseCase;
   let mockRepository;
   let spy: jest.SpyInstance;
 
@@ -30,12 +33,12 @@ describe('Account', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CreateAccountUseCase,
+        CreateAccountAdapter,
         {
           provide: OutgoingPortEnum.AccountRepository,
           useValue: mockRepository,
         },
-        FetchAccountUseCase,
+        FetchAccountAdapter,
         {
           provide: OutgoingPortEnum.AccountRepository,
           useValue: mockRepository,
@@ -43,8 +46,9 @@ describe('Account', () => {
       ],
     }).compile();
     spy = jest.spyOn(mockRepository, 'createAccount');
-    createAccountAdapter = module.get<CreateAccountPort>(CreateAccountUseCase);
-    fetchAccountAdapter = module.get<FetchAccountPort>(FetchAccountUseCase);
+    createAccountAdapter =
+      module.get<CreateAccountUseCase>(CreateAccountAdapter);
+    fetchAccountAdapter = module.get<FetchAccountUseCase>(FetchAccountAdapter);
   });
 
   afterEach(() => {

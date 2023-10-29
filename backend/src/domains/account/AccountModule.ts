@@ -4,24 +4,24 @@ import { AccountService } from './application/service/AccountService';
 import { AccountMockRepository } from './infrastructure/persistence/MockRepository';
 import { IncomingPortEnum } from './core/ports/IncomingPort';
 import { AccountRepository, OutgoingPortEnum } from './core/ports/OutgoingPort';
-import { CreateAccountUseCase } from './core/usecases/CreateAccountUseCase';
-import { FetchAccountUseCase } from './core/usecases/FetchAccountUseCase';
+import { CreateAccountAdapter } from './core/usecases/CreateAccountUseCase';
+import { FetchAccountAdapter } from './core/usecases/FetchAccountUseCase';
 
 @Module({
   imports: [],
   controllers: [AccountRestController],
   providers: [
     {
-      provide: IncomingPortEnum.CreateAccountPort,
+      provide: IncomingPortEnum.CreateAccountUseCase,
       useFactory: (respository: AccountRepository) => {
-        return new CreateAccountUseCase(respository);
+        return new CreateAccountAdapter(respository);
       },
       inject: [OutgoingPortEnum.AccountRepository],
     },
     {
-      provide: IncomingPortEnum.FetchAccountPort,
+      provide: IncomingPortEnum.FetchAccountUseCase,
       useFactory: (respository: AccountRepository) => {
-        return new FetchAccountUseCase(respository);
+        return new FetchAccountAdapter(respository);
       },
       inject: [OutgoingPortEnum.AccountRepository],
     },

@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IncomingPortEnum } from '../core/ports/IncomingPort';
-import { HelloRepositoryPort } from '../core/ports/OutgoingPort';
+import { HelloRepository } from '../core/ports/OutgoingPort';
 
 @Injectable()
 export class HelloService {
   constructor(
-    @Inject(IncomingPortEnum.DisplayHelloPort)
-    private readonly displayHelloUseCase: HelloRepositoryPort,
+    @Inject(IncomingPortEnum.DisplayHelloUseCase)
+    private readonly displayHelloUseCase: HelloRepository,
   ) {}
 
   fetchHello(): string {

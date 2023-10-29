@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Hello } from '../core/Hello';
-import { HelloRepositoryPort } from '../core/ports/OutgoingPort';
+import { HelloRepository } from '../core/ports/OutgoingPort';
 
 @Injectable()
-export class MockFetchHelloAdapter implements HelloRepositoryPort {
+export class MockFetchHelloAdapter implements HelloRepository {
   private readonly hello: Hello;
   constructor() {
     this.hello = new Hello('Hello World!!!');

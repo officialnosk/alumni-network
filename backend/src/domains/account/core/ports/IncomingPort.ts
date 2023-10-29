@@ -1,15 +1,15 @@
 import { Account } from '../models/Account';
 
 export enum IncomingPortEnum {
-  CreateAccountPort = 'CreateAccountPort',
-  FetchAccountPort = 'FetchAccountPort',
+  CreateAccountUseCase = 'CreateAccountUseCase',
+  FetchAccountUseCase = 'FetchAccountUseCase',
 }
 
-export interface CreateAccountPort {
+export interface CreateAccountUseCase {
   createAccount(account: Account): Promise<Account>;
 }
 
-export interface FetchAccountPort {
+export interface FetchAccountUseCase {
   fetchAccount(accountId: string): Promise<Account>;
   fetchAllAccounts(): Promise<Account[]>;
 }

@@ -1,7 +1,7 @@
 export enum IncomingPortEnum {
-  DisplayHelloPort = 'DisplayHelloPort',
+  DisplayHelloUseCase = 'DisplayHelloUseCase',
 }
 
-export interface DisplayHelloPort {
+export interface DisplayHelloUseCase {
   fetchHello(): string;
 }

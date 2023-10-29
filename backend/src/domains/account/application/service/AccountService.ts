@@ -1,7 +1,7 @@
 import { HttpException, Inject } from '@nestjs/common';
 import {
-  CreateAccountPort,
-  FetchAccountPort,
+  CreateAccountUseCase,
+  FetchAccountUseCase,
   IncomingPortEnum,
 } from '../../core/ports/IncomingPort';
 import { Account } from '../../core/models/Account';
@@ -9,10 +9,10 @@ import { CreateAccountResponse, FetchAccountResponse } from '../dto/AccountDto';
 
 export class AccountService {
   constructor(
-    @Inject(IncomingPortEnum.CreateAccountPort)
-    private readonly createAccountPort: CreateAccountPort,
-    @Inject(IncomingPortEnum.FetchAccountPort)
-    private readonly fetchAccountPort: FetchAccountPort,
+    @Inject(IncomingPortEnum.CreateAccountUseCase)
+    private readonly createAccountPort: CreateAccountUseCase,
+    @Inject(IncomingPortEnum.FetchAccountUseCase)
+    private readonly fetchAccountPort: FetchAccountUseCase,
   ) {}
 
   async createAccount(account: Account): Promise<CreateAccountResponse> {
@@ -32,14 +32,7 @@ export class AccountService {
     try {
       const fetchedAccount =
         await this.fetchAccountPort.fetchAccount(accountId);
-      return {
-        id: fetchedAccount.id,
-        userName: fetchedAccount.userName,
-        email: fetchedAccount.email,
-        createdAt: fetchedAccount.createdAt,
-        role: fetchedAccount.role?.toString(),
-        institutionCode: fetchedAccount.institutionCode,
-      };
+      return this.mapEntityToFetchAccountResponse(fetchedAccount);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -48,14 +41,18 @@ export class AccountService {
   async fetchAllAccounts(): Promise<FetchAccountResponse[]> {
     const fetchedAccounts = await this.fetchAccountPort.fetchAllAccounts();
     return fetchedAccounts.map((account) => {
-      return {
-        id: account.id,
-        userName: account.userName,
-        email: account.email,
-        createdAt: account.createdAt,
-        role: account.role?.toString(),
-        institutionCode: account.institutionCode,
-      };
+      return this.mapEntityToFetchAccountResponse(account);
     });
+  }
+
+  private mapEntityToFetchAccountResponse(account: Account) {
+    return {
+      id: account.id,
+      userName: account.userName,
+      email: account.email,
+      createdAt: account.createdAt,
+      role: account.role?.toString(),
+      institutionCode: account.institutionCode,
+    };
   }
 }

@@ -3,25 +3,22 @@ import { HelloController } from './application/web/RestController';
 import { HelloService } from './application/HelloService';
 import { MockFetchHelloAdapter } from './infrastructure/MockFetchHelloAdapter';
 import { IncomingPortEnum } from './core/ports/IncomingPort';
-import {
-  HelloRepositoryPort,
-  OutgoingPortEnum,
-} from './core/ports/OutgoingPort';
-import { DisplayHelloUseCase } from './core/DisplayHelloUseCase';
+import { HelloRepository, OutgoingPortEnum } from './core/ports/OutgoingPort';
+import { DisplayHelloAdapter } from './core/DisplayHelloUseCase';
 
 @Module({
   imports: [],
   controllers: [HelloController],
   providers: [
     {
-      provide: IncomingPortEnum.DisplayHelloPort,
-      useFactory: (respository: HelloRepositoryPort) => {
-        return new DisplayHelloUseCase(respository);
+      provide: IncomingPortEnum.DisplayHelloUseCase,
+      useFactory: (respository: HelloRepository) => {
+        return new DisplayHelloAdapter(respository);
       },
-      inject: [OutgoingPortEnum.FetchHelloRepositoryPort],
+      inject: [OutgoingPortEnum.HelloRepository],
     },
     {
-      provide: OutgoingPortEnum.FetchHelloRepositoryPort,
+      provide: OutgoingPortEnum.HelloRepository,
       useClass: MockFetchHelloAdapter,
     },
     HelloService,
