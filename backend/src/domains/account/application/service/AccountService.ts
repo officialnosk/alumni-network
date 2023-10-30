@@ -16,7 +16,7 @@ export class AccountService {
   ) {}
 
   async createAccount(account: Account): Promise<CreateAccountResponse> {
-    // todo: change from domain model to dto
+    // todo: change from domain entities to dto
     const createdAccount = await this.createAccountPort.createAccount(account);
     return {
       id: createdAccount.id,

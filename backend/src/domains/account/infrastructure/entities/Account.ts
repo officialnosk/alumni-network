@@ -1,13 +1,7 @@
-export enum Role {
-  god = 'god',
-  admin = 'admin',
-  user = 'user',
-}
-
 export class Account {
   private _id: string;
   private _userName: string;
-  private _role: Role;
+  private _role: string;
   private _password: string;
   private _email: string;
   private _institutionCode: string;
@@ -29,9 +23,9 @@ export class Account {
   }
 
   public get role(): string {
-    return this._role.toString();
+    return this._role;
   }
-  public set role(value: Role) {
+  public set role(value: string) {
     this._role = value;
   }
 
