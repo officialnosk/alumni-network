@@ -1,6 +1,7 @@
 import { HttpException, Inject } from '@nestjs/common';
 import {
   CreateAccountUseCase,
+  DeleteAccountUseCase,
   FetchAccountUseCase,
   IncomingPortEnum,
 } from '../../core/ports/IncomingPort';
@@ -13,6 +14,8 @@ export class AccountService {
     private readonly createAccountPort: CreateAccountUseCase,
     @Inject(IncomingPortEnum.FetchAccountUseCase)
     private readonly fetchAccountPort: FetchAccountUseCase,
+    @Inject(IncomingPortEnum.DeleteAccountUseCase)
+    private readonly deleteAccountPort: DeleteAccountUseCase,
   ) {}
 
   async createAccount(account: Account): Promise<CreateAccountResponse> {
@@ -43,6 +46,14 @@ export class AccountService {
     return fetchedAccounts.map((account) => {
       return this.mapEntityToFetchAccountResponse(account);
     });
+  }
+
+  async deleteAccount(accountId: string): Promise<void> {
+    try {
+      await this.deleteAccountPort.deleteAccount(accountId);
+    } catch (error) {
+      throw error;
+    }
   }
 
   private mapEntityToFetchAccountResponse(account: Account) {

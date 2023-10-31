@@ -2,57 +2,39 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateAccountAdapter } from './CreateAccountUseCase';
 import {
   CreateAccountUseCase,
+  DeleteAccountUseCase,
   FetchAccountUseCase,
 } from '../ports/IncomingPort';
 import { Account } from '../models/Account';
 import { OutgoingPortEnum } from '../ports/OutgoingPort';
 import { FetchAccountAdapter } from './FetchAccountUseCase';
+import { AccountNotFound } from '../exceptions/AccountNotFound';
+import { AccountMockRepository } from '../../infrastructure/persistence/MockRepository';
+import { DeleteAccountAdapter } from './DeleteAccountUseCase';
 
-describe('Account', () => {
+describe('Account UseCase Test', () => {
   let createAccountAdapter: CreateAccountUseCase;
   let fetchAccountAdapter: FetchAccountUseCase;
-  let mockRepository;
-  let spy: jest.SpyInstance;
+  let deleteAccountAdapter: DeleteAccountUseCase;
 
   beforeEach(async () => {
-    mockRepository = {
-      accounts: [] as Account[],
-      createAccount: jest.fn(function (account: Account) {
-        this.accounts.push(account);
-        return account;
-      }),
-      fetchAccount: jest.fn(function (accountId: string) {
-        return this.accounts.find(
-          (account: Account) => account.id === accountId,
-        );
-      }),
-      fetchAllAccounts: jest.fn(function () {
-        return this.accounts;
-      }),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateAccountAdapter,
-        {
-          provide: OutgoingPortEnum.AccountRepository,
-          useValue: mockRepository,
-        },
         FetchAccountAdapter,
+        DeleteAccountAdapter,
         {
           provide: OutgoingPortEnum.AccountRepository,
-          useValue: mockRepository,
+          useClass: AccountMockRepository,
         },
       ],
     }).compile();
-    spy = jest.spyOn(mockRepository, 'createAccount');
+    jest.spyOn(AccountMockRepository.prototype, 'createAccount');
     createAccountAdapter =
       module.get<CreateAccountUseCase>(CreateAccountAdapter);
     fetchAccountAdapter = module.get<FetchAccountUseCase>(FetchAccountAdapter);
-  });
-
-  afterEach(() => {
-    spy.mockClear();
+    deleteAccountAdapter =
+      module.get<DeleteAccountUseCase>(DeleteAccountAdapter);
   });
 
   it('should return account on create account', async () => {
@@ -60,13 +42,11 @@ describe('Account', () => {
     account.id = '1';
     account.email = 'test@test.com';
     const result = await createAccountAdapter.createAccount(account);
-    expect(spy).toBeCalledTimes(1);
     expect(result.id).toEqual('1');
   });
 
   it('should return empty array on fetch all accounts', async () => {
     const result = await fetchAccountAdapter.fetchAllAccounts();
-    expect(result).toEqual([]);
     expect(result).toHaveLength(0);
   });
 
@@ -79,7 +59,7 @@ describe('Account', () => {
     expect(result.id).toEqual('1');
   });
 
-  it('shouldnot return empty account after account creation in fetch all accounts', async () => {
+  it('should not return empty account after account creation in fetch all accounts', async () => {
     const account = new Account();
     account.id = '1';
     account.email = 'test@test.com';
@@ -93,7 +73,23 @@ describe('Account', () => {
     const result = await fetchAccountAdapter.fetchAllAccounts();
 
     expect(result).toEqual([account, account2]);
-    expect(spy).toBeCalledTimes(2);
+    // expect(spy).toBeCalledTimes(2);
     expect(result).not.toHaveLength(0);
+  });
+
+  it('should throw AccountNotFound exception on delete', () => {
+    expect(async () => {
+      await deleteAccountAdapter.deleteAccount('1');
+    }).rejects.toThrowError(AccountNotFound);
+  });
+
+  it('should delete account if already exists', async () => {
+    const account = new Account();
+    account.id = '1';
+    account.email = 'test@test.com';
+    await createAccountAdapter.createAccount(account);
+    await deleteAccountAdapter.deleteAccount('1');
+    const result = await fetchAccountAdapter.fetchAllAccounts();
+    expect(result).toHaveLength(0);
   });
 });

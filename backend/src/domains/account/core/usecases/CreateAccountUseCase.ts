@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { Account } from '../models/Account';
 import { CreateAccountUseCase } from '../ports/IncomingPort';
-import { OutgoingPortEnum } from '../ports/OutgoingPort';
+import { AccountRepository, OutgoingPortEnum } from '../ports/OutgoingPort';
 
 export class CreateAccountAdapter implements CreateAccountUseCase {
   constructor(
     @Inject(OutgoingPortEnum.AccountRepository)
-    private readonly accountRepository: CreateAccountUseCase,
+    private readonly accountRepository: AccountRepository,
   ) {
     this.accountRepository = accountRepository;
   }

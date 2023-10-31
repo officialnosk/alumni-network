@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { Account } from '../../core/models/Account';
 import { AccountService } from '../service/AccountService';
 import { SuccessResponse, responses } from 'src/domains/shared/api.response';
@@ -28,5 +36,12 @@ export class AccountRestController {
   @Get()
   async fetchAllAccounts(): Promise<SuccessResponse<FetchAccountResponse[]>> {
     return responses.toJSON(true, await this.service.fetchAllAccounts());
+  }
+
+  @Delete(':accountId')
+  async deleteAccount(
+    @Param('accountId') accountId: string,
+  ): Promise<SuccessResponse<void>> {
+    return responses.toJSON(true, await this.service.deleteAccount(accountId));
   }
 }

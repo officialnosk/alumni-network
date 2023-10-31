@@ -1,6 +1,7 @@
 import { Account, Role } from '../../core/models/Account';
 import { Account as AccountEntity } from '../entities/Account';
 import { AccountRepository } from '../../core/ports/OutgoingPort';
+import { AccountNotFound } from '../../core/exceptions/AccountNotFound';
 
 export class AccountMockRepository implements AccountRepository {
   private accounts: AccountEntity[] = [];
@@ -18,14 +19,27 @@ export class AccountMockRepository implements AccountRepository {
     return this._findAllAccounts();
   }
 
-  private _findAccount(accountId: string): Promise<Account> {
-    return new Promise((resolve, reject) => {
-      const result = this.accounts.find((account) => account.id === accountId);
-      if (!result) {
-        reject(new Error('Account not found'));
+  async deleteAccount(accountId: string): Promise<void> {
+    try {
+      await this._findAccount(accountId);
+      this.accounts = this.accounts.filter(
+        (account) => account.id !== accountId,
+      );
+    } catch (error) {
+      if (error instanceof AccountNotFound) {
+        throw new AccountNotFound();
+      } else {
+        throw new Error('Unable to Delete Account');
       }
-      resolve(this._toModel(result));
-    });
+    }
+  }
+
+  private async _findAccount(accountId: string): Promise<Account> {
+    const result = this.accounts.find((account) => account.id === accountId);
+    if (!result?.id) {
+      throw new AccountNotFound();
+    }
+    return this._toModel(result);
   }
 
   private _findAllAccounts(): Promise<Account[]> {

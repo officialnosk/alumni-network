@@ -6,6 +6,7 @@ import { IncomingPortEnum } from './core/ports/IncomingPort';
 import { AccountRepository, OutgoingPortEnum } from './core/ports/OutgoingPort';
 import { CreateAccountAdapter } from './core/usecases/CreateAccountUseCase';
 import { FetchAccountAdapter } from './core/usecases/FetchAccountUseCase';
+import { DeleteAccountAdapter } from './core/usecases/DeleteAccountUseCase';
 
 @Module({
   imports: [],
@@ -13,15 +14,22 @@ import { FetchAccountAdapter } from './core/usecases/FetchAccountUseCase';
   providers: [
     {
       provide: IncomingPortEnum.CreateAccountUseCase,
-      useFactory: (respository: AccountRepository) => {
-        return new CreateAccountAdapter(respository);
+      useFactory: (repository: AccountRepository) => {
+        return new CreateAccountAdapter(repository);
       },
       inject: [OutgoingPortEnum.AccountRepository],
     },
     {
       provide: IncomingPortEnum.FetchAccountUseCase,
-      useFactory: (respository: AccountRepository) => {
-        return new FetchAccountAdapter(respository);
+      useFactory: (repository: AccountRepository) => {
+        return new FetchAccountAdapter(repository);
+      },
+      inject: [OutgoingPortEnum.AccountRepository],
+    },
+    {
+      provide: IncomingPortEnum.DeleteAccountUseCase,
+      useFactory: (repository: AccountRepository) => {
+        return new DeleteAccountAdapter(repository);
       },
       inject: [OutgoingPortEnum.AccountRepository],
     },
