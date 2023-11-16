@@ -1,10 +1,10 @@
 export class Hello {
-  private readonly hello: string;
+  private readonly message: string;
 
   public constructor(hello: string) {
-    this.hello = hello;
+    this.message = hello;
   }
   public getHello(): string {
-    return this.hello;
+    return this.message;
   }
 }
