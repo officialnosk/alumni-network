@@ -1,7 +1,7 @@
 export enum OutgoingPortEnum {
-  FetchHelloRepositoryPort = 'FetchHelloRepositoryPort',
+  HelloRepository = 'HelloRepository',
 }
 
-export interface HelloRepositoryPort {
+export interface HelloRepository {
   fetchHello(): string;
 }

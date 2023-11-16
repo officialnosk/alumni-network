@@ -1,8 +1,8 @@
-import { DisplayHelloPort } from './ports/IncomingPort';
-import { HelloRepositoryPort } from '../core/ports/OutgoingPort';
+import { DisplayHelloUseCase } from './ports/IncomingPort';
+import { HelloRepository } from './ports/OutgoingPort';
 
-export class DisplayHelloUseCase implements DisplayHelloPort {
-  constructor(private readonly helloRepo: HelloRepositoryPort) {}
+export class DisplayHelloAdapter implements DisplayHelloUseCase {
+  constructor(private readonly helloRepo: HelloRepository) {}
 
   fetchHello(): string {
     return this.helloRepo.fetchHello();

@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MockFetchHelloAdapter } from './MockFetchHelloAdapter';
-import { HelloRepositoryPort } from '../core/ports/OutgoingPort';
+import { HelloRepository } from '../core/ports/OutgoingPort';
 
 describe('MockFetchHelloAdapter', () => {
-  let helloAdapter: HelloRepositoryPort;
+  let helloAdapter: HelloRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [MockFetchHelloAdapter],
     }).compile();
 
-    helloAdapter = module.get<HelloRepositoryPort>(MockFetchHelloAdapter);
+    helloAdapter = module.get<HelloRepository>(MockFetchHelloAdapter);
   });
 
   it('should get hello', () => {

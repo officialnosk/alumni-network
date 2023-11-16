@@ -1,9 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DisplayHelloPort, IncomingPortEnum } from '../core/ports/IncomingPort';
+import {
+  DisplayHelloUseCase,
+  IncomingPortEnum,
+} from '../core/ports/IncomingPort';
 import { HelloService } from './HelloService';
 
 describe('HelloService', () => {
-  let helloAdapter: DisplayHelloPort;
+  let helloAdapter: DisplayHelloUseCase;
   let mockRepository;
   let spy: jest.SpyInstance;
 
@@ -16,13 +19,13 @@ describe('HelloService', () => {
       providers: [
         HelloService,
         {
-          provide: IncomingPortEnum.DisplayHelloPort,
+          provide: IncomingPortEnum.DisplayHelloUseCase,
           useValue: mockRepository,
         },
       ],
     }).compile();
     spy = jest.spyOn(mockRepository, 'fetchHello');
-    helloAdapter = module.get<DisplayHelloPort>(HelloService);
+    helloAdapter = module.get<DisplayHelloUseCase>(HelloService);
   });
 
   afterEach(() => {
