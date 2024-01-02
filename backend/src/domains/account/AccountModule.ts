@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AccountRestController } from './application/web/RestController';
+import { AccountRestController } from './application/controller/AccountController';
 import { AccountService } from './application/service/AccountService';
-import { AccountMockRepository } from './infrastructure/persistence/MockRepository';
+import { AccountMockRepository } from './infrastructure/database/MockRepository';
 import { IncomingPortEnum } from './core/ports/IncomingPort';
 import { AccountRepository, OutgoingPortEnum } from './core/ports/OutgoingPort';
 import { CreateAccountAdapter } from './core/usecases/CreateAccountUseCase';

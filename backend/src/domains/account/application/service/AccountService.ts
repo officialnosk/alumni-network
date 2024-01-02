@@ -6,7 +6,7 @@ import {
   IncomingPortEnum,
 } from '../../core/ports/IncomingPort';
 import { Account } from '../../core/models/Account';
-import { CreateAccountResponse, FetchAccountResponse } from '../dto/AccountDto';
+import { CreateAccountResponse, FetchAccountResponse } from '../../core/models/AccountDto';
 
 export class AccountService {
   constructor(

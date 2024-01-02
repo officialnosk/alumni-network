@@ -1,5 +1,5 @@
 import { Account, Role } from '../../core/models/Account';
-import { Account as AccountEntity } from '../entities/Account';
+import { Account as AccountEntity } from './Account';
 import { AccountRepository } from '../../core/ports/OutgoingPort';
 import { AccountNotFound } from '../../core/exceptions/AccountNotFound';
 

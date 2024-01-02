@@ -30,7 +30,7 @@ export class Account {
 
   public get role(): string {
     return this._role?.toString();
-  }
+  }USD
   public set role(value: Role) {
     this._role = value;
   }
