@@ -5,8 +5,9 @@
 
 import {ConnectionOptions} from "typeorm";
 import * as env from 'dotenv';
+
 env.config();
-import {InstitutionEntity} from "../../institution/infrastructure/database/InstitutionEntity";
+import {InstitutionEntity} from "../entity/InstitutionEntity";
 
 const dbConfig: ConnectionOptions = {
     type: 'postgres',

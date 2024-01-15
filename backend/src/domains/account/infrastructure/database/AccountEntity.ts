@@ -20,10 +20,10 @@ export class AccountEntity {
     @Column({name: 'user_name'})
     private _userName: String;
 
-    @Column
+    @Column({name: 'role'})
     private _role: String;
 
-    @Column
+    @Column({name: 'email'})
     private _email: String;
 
     @Column({name: 'password_salt'})

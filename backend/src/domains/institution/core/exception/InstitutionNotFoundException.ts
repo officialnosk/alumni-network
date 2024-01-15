@@ -6,7 +6,7 @@
 import {CustomError} from "../../../shared/exception/CustomError";
 
 export class InstitutionNotFoundException extends CustomError {
-    constructor(msg: String) {
+    constructor(msg: string) {
         super(msg);
     }
 }

@@ -5,7 +5,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dbConfig from './db.provider';
+import dbConfig from './DBProvider';
 
 @Module({
     imports: [
@@ -13,4 +13,4 @@ import dbConfig from './db.provider';
     ]
 })
 
-export class DbModule {}
+export class DBModule {}

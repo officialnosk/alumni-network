@@ -5,9 +5,9 @@
 import {Injectable} from "@nestjs/common";
 import {FindOneOptions, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
-import {InstitutionEntity} from "./InstitutionEntity";
-import {Institution} from "../../core/model/Institution";
-import {InstitutionNotFoundException} from "../../core/exception/InstitutionNotFoundException";
+import {InstitutionEntity} from "../entity/InstitutionEntity";
+import {Institution} from "../../../domains/institution/core/model/Institution";
+import {InstitutionNotFoundException} from "../../../domains/institution/core/exception/InstitutionNotFoundException";
 
 @Injectable()
 export class InstitutionRepository {
