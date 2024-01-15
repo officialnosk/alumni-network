@@ -63,24 +63,4 @@ export class Account {
   public set updatedAt(value: Date) {
     this._updatedAt = value;
   }
-
-  //   constructor(
-  //     id: string,
-  //     userName: string,
-  //     role: string,
-  //     password: string,
-  //     email: string,
-  //     institutionCode: string,
-  //     createdAt: Date,
-  //     updatedAt: Date,
-  //   ) {
-  //     this._id = id;
-  //     this._userName = userName;
-  //     this._role = role;
-  //     this._password = password;
-  //     this._email = email;
-  //     this._institutionCode = institutionCode;
-  //     this._createdAt = createdAt;
-  //     this._updatedAt = updatedAt;
-  //   }
 }

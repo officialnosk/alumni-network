@@ -9,7 +9,7 @@ import { Account } from '../models/Account';
 import { OutgoingPortEnum } from '../ports/OutgoingPort';
 import { FetchAccountAdapter } from './FetchAccountUseCase';
 import { AccountNotFound } from '../exceptions/AccountNotFound';
-import { AccountMockRepository } from '../../infrastructure/persistence/MockRepository';
+import { AccountMockRepository } from '../../infrastructure/database/MockRepository';
 import { DeleteAccountAdapter } from './DeleteAccountUseCase';
 
 describe('Account UseCase Test', () => {
